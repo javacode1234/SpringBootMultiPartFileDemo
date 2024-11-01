@@ -49,6 +49,18 @@ public class UserService {
 	public Optional<User> getById(Integer id){
 		return ur.findById(id);
 	}
+
+	public void updateUserById(User user) {
+		 ur.save(user);
+	}
+
+	public void delUser(User user) {
+		ur.delete(user);
+	}
+
+	public void deleteUserById(Integer id) {
+		ur.deleteById(id);
+	}
 	
 //	public User saveImage(MultipartFile file, User u) throws IOException {
 //		//String documentName = file.getOriginalFilename();

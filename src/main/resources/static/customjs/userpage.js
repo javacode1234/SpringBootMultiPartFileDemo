@@ -30,6 +30,7 @@ $('document').ready(function() {
 			$("#modalEdit .modal-title").text("Genel Bilgiler Güncelle");
 			var href = $(this).attr('href');		
 			$.get(href, function(user, status){
+				$("#modalEdit #editFormModal").attr('action','/user/updateuser/'+user.id);
 				$("#modalEdit #id").val(user.id);
 				$("#modalEdit #isim").val(user.name);
 				$("#modalEdit #email").val(user.email);
@@ -40,20 +41,29 @@ $('document').ready(function() {
 		/* edit modal end  */
 		/* edit modal change img satart*/
 		$("#modalEdit #resim").change(function(){
-			readURL(this);
-		});
-		
-		/* edit modal change img satart*/
+			readURLEdit(this);
+		});		
+		/* edit modal change img end*/
 		/* main user form change img satart*/
 		$("#mainUserForm #resim").change(function(){
-			readURL(this);
+			readURLMainUserForm(this);
 		});
 		/* main user form  change img satart*/
+		/* main user form delete modal sart */
+		$('#userTable #btnSil').click(function(e){
+			e.preventDefault();
+			var href = $(this).attr('href');
+			$('#modalDelete #deleteConfirmBtn').attr('href',href);
+			$('#modalDelete #modalParagraf').text(href);
+			
+			$('#modalDelete').modal();
+		})
+		/* main user form delete modal sart */
 
 
 });
 /* edit modal change img satart*/
-function readURL(input) {
+function readURLEdit(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -65,7 +75,7 @@ function readURL(input) {
 /* edit modal change img satart*/
 
 /* main user form change img satart*/
-function readURL(input) {
+function readURLMainUserForm(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
