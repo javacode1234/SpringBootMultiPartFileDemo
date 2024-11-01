@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap demo</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/save-image-page}">File Operations</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+         <a class="nav-link active" aria-current="page" th:href="@{/save-image-page}"><b>Product</b></a>
+        <a class="nav-link active" aria-current="page" th:href="@{/user/userpage}"><b>User</b></a>
+        <a class="nav-link active" th:href="@{/document}"><b>file upload&download</b></a>
+        <a class="nav-link active" href="#">xxxx</a>
+        <a class="nav-link disabled" aria-disabled="true">xxxx</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+	<div class="container" style="padding:10px;margin-top:50px;">
+		<div class="row justify-content-center">
+			<h1 class="text-center" th:text="${baslik}">Save User Page</h1>
+			<form th:action="@{/user/saveuser}"  method="post" enctype="multipart/form-data" id="mainUserForm"
+												style="border:1px solid ;padding:10px;border-radius:10px;" class="col-sm-6">
+				<div class="modal-header text-center mb-3">
+					<img id="userFormResim" th:src="@{../staticimages/favicon.png}" width="100" height="100" class="rounded mx-auto d-block bordered">
+				</div>				
+				<div class="row mb-1">
+					<label for="resim" class="col-sm-3 col-form-label-sm">Resim</label>
+					<div class="col-sm-9">
+						<input type="file" id="resim" name="resim" class="form-control form-control-sm" accept="image/*">
+					</div>					
+				</div>
+				<div class="row mb-1">
+					<label for="name" class="col-sm-3 col-form-label-sm">İsim</label>
+					<div class="col-sm-9">
+						<input type="text" id="name" name="name" class="form-control form-control-sm">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="email" class="col-sm-3 col-form-label-sm">E-mail</label>
+					<div class="col-sm-9">
+						<input type="email" id="desc" name="email" class="form-control form-control-sm">
+					</div>
+				</div>
+				<div class="row" style="padding-left: 10px;padding-right: 10px">
+					<button type="submit" class="btn btn-sm btn-primary" >Kaydet</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container mt-5">
+	<hr>
+		<table class="table table-hover table-bordered table-sm">
+			<thead>
+				<tr>
+					<th scope="col">#id</th>
+					<th scope="col">İsim</th>
+					<th scope="col">email</th>
+					<th scope="col">Resim</th>
+					<th scope="col">Resim</th>
+					<th scope="col">İşlem</th>
+				</tr>
+			</thead>
+			<tbody id="userTable">
+				<tr th:each="u : ${users}">
+					<td id="userId" th:text="${u.id}"></td>
+					<td id="userName" th:text="${u.name}"></td>
+					<td id="userEmail" th:text="${u.email}"></td>
+					<td>
+						<img src="data:image/*;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQAAAABRBrPYAAABjElEQVR42u3aTW6DMBAF4EFZsOQIPgpHS47GUTgCyywQ7vxhoJA0xlRVpedFROHrhnGex24pfjIGAgMDAwP7G/YkG41c8M890W3yezewYqbXsW/kkx8FvjNZfZ5gFzB5523f2M2OyyHsIXUBu5bRnSd5HcF+gWlstJYhYJexVYYsk/xt1IB9ztIKqC9fZ/vbhRIsh60GP73z7fqHNg8sg2kVOJmtf+MqUD1WcZ8hYKdYHKUr7sJAS1ZXc5iAFTMZEh02ybvAv6gs7L8LYPlMqvCgoNEhu4+hHm2X14BdwSrriknmtmWIpcp2BQQ7yTxDrAqthHZlF7tigZ1gab2bVh2HlgOsmNmWmQPZX/48t+X5DayU6cK37J39ANNmO9gFzIeXw9s2XhOPNylgWSy9/LltG/zkJwyHW2ywPLY5dU99xdzRgZUyzxCrQqpLu22PwQrZnCHku49vJz9ghSydumun8WqSg2UyzxD1ugLSwd4Z7CRb2jY/T4vRjt9f/VkfLIPh/2rAwMDA/jH7As7v6+Mxo5RFAAAAAElFTkSuQmCC" width="50" height="50"
+							 class="rounded-circle img-thumbnail" >
+					</td>
+					<td>
+						<a id="btnResim" href="" data-bs-toggle="modal" data-bs-target="#modalResim">
+						<!--   -->
+							<img id="userResim" th:src=" 'data:image/*;base64,' + ${u.stringResim}" width="40" height="40" class="rounded-circle img-thumbnail">
+						</a>						
+					</td>
+					<td>
+						<div class="btn-group" role="group" aria-label="Basic mixed styles example">						  
+						  <a id="btnView" class="btn btn-warning" th:href="@{ /user/getbyid(id=${u.id})}" data-bs-toggle="modal" data-bs-target="#modalView">Gör</a>
+						  <a id="btnEdit" class="btn btn-success" th:href="@{ /user/getbyid(id=${u.id})}" data-bs-toggle="modal" data-bs-target="#modalEdit">Güncelle</a>
+						  <a id="btnSil" class="btn btn-danger">Sil</a>
+						</div>					
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+
+	</div>
+	
+	<!-- image view Modal start -->
+	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalResim">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered">					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- image view Modal end -->
+	
+	<!-- view Modal start -->
+	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalView">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+<!-- 					<p id="modalParagraf">Modal body text goes here.</p> -->
+					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered">
+					
+					<div class="input-group input-group-sm mb-1 mt-3">
+					  <span class="input-group-text" id="basic-addon1">Id : </span>
+					  <input id="id" type="text" class="form-control" readonly>
+					</div>					
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">İsim : </span>
+					  <input id="isim" type="text" class="form-control" readonly>
+					</div>
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">E-mail : </span>
+					  <input id="email" type="text" class="form-control" readonly>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- view Modal end -->
+	<!-- view Modal start -->
+	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalEdit">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+<!-- 					<p id="modalParagraf">Modal body text goes here.</p> -->
+				<form>
+					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered">
+					
+					<div class="input-group input-group-sm mb-1 mt-3">
+						<input type="file" id="resim" name="resim" class="form-control" accept="image/*">
+					</div>	
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">Id : </span>
+					  <input id="id" type="text" class="form-control" readonly>
+					</div>					
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">İsim : </span>
+					  <input id="isim" type="text" class="form-control" readonly>
+					</div>
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">E-mail : </span>
+					  <input id="email" type="text" class="form-control" readonly>
+					</div>
+					
+				</form>	
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Close</button>
+<!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- view Modal end -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script th:src="@{../customjs/userpage.js}" type="text/javascript"></script>
+		
+</body>
+</html>

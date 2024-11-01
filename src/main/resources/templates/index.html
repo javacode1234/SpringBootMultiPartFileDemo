@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap demo</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/save-image-page}">File Operations</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" th:href="@{/save-image-page}"><b>Product</b></a>
+        <a class="nav-link active" th:href="@{/user/userpage}"><b>User</b></a>
+        <a class="nav-link active" th:href="@{/document}"><b>file upload&download</b></a>
+        <a class="nav-link active" href="#">Pricing</a>
+        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+	<div class="container" style="padding:10px;margin-top:50px;">
+		<div class="row justify-content-center">
+			<h1 class="text-center">Save Product Page</h1>
+			<form th:action="@{/save-image}" th:object="${product}" enctype="multipart/form-data" method="post"
+												style="border:1px solid ;padding:10px;border-radius:10px;" class="col-sm-6">
+				
+				
+<!-- 				<div class="row mb-3 justify-content-center "> -->
+<!-- 					<div class="col-sm-3 "> -->
+<!-- 						<img class="rounded-circle img-thumbnail" width="100" height="100" -->
+<!-- 							th:src="@{../../niceadminpanel/assets/img/smmm.png}" alt=""> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+				<div class="row mb-1">
+					<label for="formFile" class="col-sm-3 col-form-label-sm">Logo</label>
+					<div class="col-sm-9">
+						<input type="file" id="formFile" name="imagedata" class="form-control form-control-sm" accept="image/*">
+					</div>					
+				</div>
+				<div class="row mb-1">
+					<label for="name" class="col-sm-3 col-form-label-sm">name</label>
+					<div class="col-sm-9">
+						<input type="text" id="name" placeholder="" name="name" class="form-control form-control-sm">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="desc" class="col-sm-3 col-form-label-sm">description</label>
+					<div class="col-sm-9">
+						<input type="text" id="desc" name="description" class="form-control form-control-sm">
+					</div>
+				</div>
+				
+
+
+				<div class="row" style="padding-left: 10px;padding-right: 10px">
+					<button type="submit" class="btn btn-sm btn-primary" >Submit</button>
+				</div>
+
+			</form>
+
+		</div>
+	</div>
+	<div class="container mt-5">
+	<hr>
+		<table class="table table-hover table-bordered table-sm">
+			<thead>
+				<tr>
+					<th scope="col">#id</th>
+					<th scope="col">Name</th>
+					<th scope="col">Description</th>
+					<th scope="col">Image</th>
+					<th scope="col">Image</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${products}">
+					<td th:text="${p.id}"></td>
+					<td th:text="${p.name}"></td>
+					<td th:text="${p.description}"></td>
+					<td>
+						<img src="data:image/*;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQAAAABRBrPYAAABjElEQVR42u3aTW6DMBAF4EFZsOQIPgpHS47GUTgCyywQ7vxhoJA0xlRVpedFROHrhnGex24pfjIGAgMDAwP7G/YkG41c8M890W3yezewYqbXsW/kkx8FvjNZfZ5gFzB5523f2M2OyyHsIXUBu5bRnSd5HcF+gWlstJYhYJexVYYsk/xt1IB9ztIKqC9fZ/vbhRIsh60GP73z7fqHNg8sg2kVOJmtf+MqUD1WcZ8hYKdYHKUr7sJAS1ZXc5iAFTMZEh02ybvAv6gs7L8LYPlMqvCgoNEhu4+hHm2X14BdwSrriknmtmWIpcp2BQQ7yTxDrAqthHZlF7tigZ1gab2bVh2HlgOsmNmWmQPZX/48t+X5DayU6cK37J39ANNmO9gFzIeXw9s2XhOPNylgWSy9/LltG/zkJwyHW2ywPLY5dU99xdzRgZUyzxCrQqpLu22PwQrZnCHku49vJz9ghSydumun8WqSg2UyzxD1ugLSwd4Z7CRb2jY/T4vRjt9f/VkfLIPh/2rAwMDA/jH7As7v6+Mxo5RFAAAAAElFTkSuQmCC" width="50" height="50"
+							 class="rounded-circle img-thumbnail" >
+					</td>
+					<td>
+						<img th:src=" 'data:image/*;base64,' + ${p.imageString}  " width="50" height="50"
+							 class="rounded-circle img-thumbnail" >
+					</td>
+				</tr>
+				
+			</tbody>
+		</table>
+
+	</div>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+</body>
+</html>
