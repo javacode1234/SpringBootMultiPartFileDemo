@@ -1,4 +1,6 @@
 $('document').ready(function() {
+	
+	
 	//alert("deneme")
 	/* resim modal start*/
 	$(".table #userTable #btnResim").click(function(e) {
@@ -56,9 +58,60 @@ $('document').ready(function() {
 			$('#modalDelete #deleteConfirmBtn').attr('href',href);
 			$('#modalDelete #modalParagraf').text(href);
 			
+			
+			var no = $(this).closest('tr').find('td').eq(0).text();
+			$('#modalDelete #id').val(no);
+			var isim = $(this).closest('tr').find('td').eq(1).text();
+			$('#modalDelete #isim').val(isim);
+			var email = $(this).closest('tr').find('td').eq(2).text();
+			$('#modalDelete #email').val(email);
+			
+			var resimhref = $(this).closest('tr').find('td:eq(4) img').attr('src');
+			$('#modalDelete #userResim').attr('src',  resimhref.toString() );
+						
 			$('#modalDelete').modal();
 		})
 		/* main user form delete modal sart */
+		/* main user form doubleClick table row show in form information sart */
+	$('#userTable tr').on('dblclick', function(e) {
+		e.preventDefault();
+
+		var no = $(this).closest('tr').find('td').eq(0).text();
+		$('#mainUserForm #id').val(no);
+		var isim = $(this).closest('tr').find('td:eq(1)').text();
+		$('#mainUserForm #name').val(isim);
+		var email = $(this).closest('tr').find('td:eq(2)').text();
+		$('#mainUserForm #email').val(email);
+
+		var resimhref = $(this).closest('tr').find('td:eq(4) img').attr('src');
+		$('#mainUserForm #userFormResim').attr('src', resimhref.toString());
+		
+		$('#mainUserForm #mainuserFormId').show();
+		$("#mainUserForm").attr('action','/user/updateuser/'+no);
+		$('#mainUserForm #id').attr('name','');
+		$('#mainUserForm #kaydetBtn').hide();
+		$('#mainUserForm #kaydetBtn2').show();
+		
+		
+		
+
+	})
+		/* main user form doubleClick table row show in form information sart */
+		/* Formu temizle start */
+		$('#mainUserForm #cleanForm').click(function(e){
+			e.preventDefault();
+			$('#mainUserForm #id').val("");
+			$('#mainUserForm #name').val("");
+			$('#mainUserForm #email').val("");
+			$('#mainUserForm #userFormResim').attr('src', '../staticimages/person-icon.png');
+			
+			$('#mainUserForm #kaydetBtn').show();
+			$('#mainUserForm #kaydetBtn2').hide();
+			$('#mainUserForm #mainuserFormId').hide();
+			$('#mainUserForm').attr('th:action',"@{/user/saveuser}");
+		})
+		
+		/* Formu temizle start */
 
 
 });

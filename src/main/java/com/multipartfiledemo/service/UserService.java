@@ -25,8 +25,7 @@ public class UserService {
 	}
 	
 	public User saveUser(String name, String email, MultipartFile file) throws IOException {
-		//String documentName = file.getOriginalFilename();
-		//String contentType = file.getContentType();
+		
 		byte[] byteResim = file.getBytes();
 		String stringResim = Base64.getEncoder().encodeToString(byteResim);
 		try {

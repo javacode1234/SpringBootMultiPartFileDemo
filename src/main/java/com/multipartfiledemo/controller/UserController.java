@@ -38,8 +38,9 @@ public class UserController {
 	}
 	
 	@PostMapping("/saveuser")
-	public String postMethodName(@RequestParam("resim") MultipartFile file, @RequestParam("name") String name,
-			@RequestParam("email") String email) throws IOException {
+	public String postMethodName(@RequestParam("resim") MultipartFile file,
+								 @RequestParam("name") String name,
+								 @RequestParam("email") String email) throws IOException {
 		
 		us.saveUser(name, email, file);
 		

@@ -6,6 +6,8 @@
 <title>Spring Boot MultiPart file && image upload to db and file system</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet" type="text/css" th:href="@{../customcss/userpagetable.css}">
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
@@ -29,58 +31,67 @@
 	<div class="container" style="padding:10px;margin-top:50px;">
 		<div class="row justify-content-center">
 			<h1 class="text-center" th:text="${baslik}">Save User Page</h1>
-			<form th:action="@{/user/saveuser}"  method="post" enctype="multipart/form-data" id="mainUserForm"
+			<form th:action="@{/user/saveuser}" method="post" enctype="multipart/form-data" id="mainUserForm"
 												style="border:1px solid ;padding:10px;border-radius:10px;" class="col-sm-6">
 				<div class="modal-header text-center mb-3">
 					<img id="userFormResim" th:src="@{../staticimages/person-icon.png}" width="100" height="100" class="rounded mx-auto d-block bordered">
-				</div>				
+				</div>						
 				<div class="row mb-1">
 					<label for="resim" class="col-sm-3 col-form-label-sm">Resim</label>
 					<div class="col-sm-9">
 						<input type="file" id="resim" name="resim" class="form-control form-control-sm" accept="image/*">
 					</div>					
 				</div>
+				<div class="row mb-1" style="display: none;" id="mainuserFormId">
+					<label for="id" class="col-sm-3 col-form-label-sm">Id</label>
+					<div class="col-sm-9">
+						<input type="text" id="id" name="id" class="form-control form-control-sm">
+					</div>
+				</div>	
 				<div class="row mb-1">
 					<label for="name" class="col-sm-3 col-form-label-sm">İsim</label>
 					<div class="col-sm-9">
-						<input type="text" id="name" name="name" class="form-control form-control-sm">
+						<input type="text" id="name" name="name" class="form-control form-control-sm" required="required">
 					</div>
 				</div>
 				<div class="row mb-3">
 					<label for="email" class="col-sm-3 col-form-label-sm">E-mail</label>
 					<div class="col-sm-9">
-						<input type="email" id="desc" name="email" class="form-control form-control-sm">
+						<input type="email" id="email" name="email" class="form-control form-control-sm">
 					</div>
 				</div>
 				<div class="row" style="padding-left: 10px;padding-right: 10px">
-					<button type="submit" class="btn btn-sm btn-primary" >Kaydet</button>
+					<button type="button" id="cleanForm" class="btn btn-sm btn-secondary col-sm-6" >Formu temizle</button>
+					<button id="kaydetBtn" type="submit" class="btn btn-sm btn-primary col-sm-6" >Kaydet</button>
+					<button id="kaydetBtn2" type="submit" class="btn btn-sm btn-success col-sm-6" style="display: none;">Güncelle</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	<div class="container mt-5">
+	<div class="container mt-2">
 	<hr>
-		<table class="table table-hover table-bordered table-sm">
-			<thead>
+	<div  style="height: 300px !important; overflow-y: scroll !important;">
+		<table id="usertable" class="table table-hover table-bordered table-sm">
+			<thead class="sticky-top">
 				<tr>
 					<th scope="col">#id</th>
 					<th scope="col">İsim</th>
-					<th scope="col">email</th>
-					<th scope="col">Resim</th>
+					<th scope="col">Email</th>
+					<th scope="col">Karekod</th>
 					<th scope="col">Resim</th>
 					<th scope="col">İşlem</th>
 				</tr>
 			</thead>
-			<tbody id="userTable" style="">
+			<tbody id="userTable">
 				<tr th:each="u : ${users}">
 					<td id="userId" th:text="${u.id}"></td>
 					<td id="userName" th:text="${u.name}"></td>
 					<td id="userEmail" th:text="${u.email}"></td>
-					<td>
+					<td class="text-center">
 						<img src="data:image/*;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQAAAABRBrPYAAABjElEQVR42u3aTW6DMBAF4EFZsOQIPgpHS47GUTgCyywQ7vxhoJA0xlRVpedFROHrhnGex24pfjIGAgMDAwP7G/YkG41c8M890W3yezewYqbXsW/kkx8FvjNZfZ5gFzB5523f2M2OyyHsIXUBu5bRnSd5HcF+gWlstJYhYJexVYYsk/xt1IB9ztIKqC9fZ/vbhRIsh60GP73z7fqHNg8sg2kVOJmtf+MqUD1WcZ8hYKdYHKUr7sJAS1ZXc5iAFTMZEh02ybvAv6gs7L8LYPlMqvCgoNEhu4+hHm2X14BdwSrriknmtmWIpcp2BQQ7yTxDrAqthHZlF7tigZ1gab2bVh2HlgOsmNmWmQPZX/48t+X5DayU6cK37J39ANNmO9gFzIeXw9s2XhOPNylgWSy9/LltG/zkJwyHW2ywPLY5dU99xdzRgZUyzxCrQqpLu22PwQrZnCHku49vJz9ghSydumun8WqSg2UyzxD1ugLSwd4Z7CRb2jY/T4vRjt9f/VkfLIPh/2rAwMDA/jH7As7v6+Mxo5RFAAAAAElFTkSuQmCC" width="50" height="50"
 							 class="rounded-circle img-thumbnail" >
 					</td>
-					<td>
+					<td class="text-center">
 						<a id="btnResim" href="" data-bs-toggle="modal" data-bs-target="#modalResim">
 						<!--   -->
 							<img id="userResim" th:src=" 'data:image/*;base64,' + ${u.stringResim}" width="50" height="50" class="rounded-circle img-thumbnail">
@@ -94,10 +105,9 @@
 						</div>					
 					</td>
 				</tr>
-				
 			</tbody>
 		</table>
-
+		</div>
 	</div>
 	
 	<!-- image view Modal start -->
@@ -210,19 +220,20 @@
 				</div>
 				<div class="modal-body">
 					<p id="modalParagraf">Modal body text goes here.</p>
-<!-- 					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered"> -->
-<!-- 					<div class="input-group input-group-sm mb-1 mt-3"> -->
-<!-- 					  <span class="input-group-text" id="basic-addon1">Id : </span> -->
-<!-- 					  <input id="id" type="text" class="form-control" readonly> -->
-<!-- 					</div>					 -->
-<!-- 					<div class="input-group input-group-sm mb-1"> -->
-<!-- 					  <span class="input-group-text" id="basic-addon1">İsim : </span> -->
-<!-- 					  <input id="isim" type="text" class="form-control" readonly> -->
-<!-- 					</div> -->
-<!-- 					<div class="input-group input-group-sm mb-1"> -->
-<!-- 					  <span class="input-group-text" id="basic-addon1">E-mail : </span> -->
-<!-- 					  <input id="email" type="text" class="form-control" readonly> -->
-<!-- 					</div> -->
+					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered">
+					<p id="dnmparagraf"></p>
+					<div class="input-group input-group-sm mb-1 mt-3">
+					  <span class="input-group-text" id="basic-addon1">Id : </span>
+					  <input id="id" type="text" class="form-control" readonly>
+					</div>					
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">İsim : </span>
+					  <input id="isim" type="text" class="form-control" readonly>
+					</div>
+					<div class="input-group input-group-sm mb-1">
+					  <span class="input-group-text" id="basic-addon1">E-mail : </span>
+					  <input id="email" type="text" class="form-control" readonly>
+					</div>
 					
 				</div>
 				<div class="modal-footer">
@@ -232,6 +243,10 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+		new DataTable('#usertable');
+	</script>
 	<!-- delete Modal end -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
