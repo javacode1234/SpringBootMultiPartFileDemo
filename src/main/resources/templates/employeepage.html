@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spring Boot MultiPart file && image upload to db and file system</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet" type="text/css" th:href="@{../customcss/userpagetable.css}">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/save-image-page}">File Operations</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+         <a class="nav-link active" aria-current="page" th:href="@{/save-image-page}"><b>Product</b></a>
+        <a class="nav-link active" aria-current="page" th:href="@{/user/userpage}"><b>User</b></a>
+        <a class="nav-link active" th:href="@{/document}"><b>File upload&download</b></a>
+        <a class="nav-link active" th:href="@{/employees}"><b>Employee</b></a>
+        <a class="nav-link active" href="#">xxxx</a>
+        <a class="nav-link disabled" aria-disabled="true">xxxx</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+	
+	<div class="container" style="margin-top:100px">
+	<h2 class="text-center mb-5">Employee Management System</h2>
+	<div class="">
+		<a th:href="@{/newemployee}" class="btn btn-primary">New Employee</a>
+	</div>
+	<div  style="height: 300px !important; overflow-y: scroll !important;margin-top:20px;">
+		<table id="employeeTable" class="table table-hover table-bordered table-stripped">
+			<thead class="sticky-top table-dark">
+				<tr>
+					<th scope="col">#id</th>
+					<th scope="col">İsim</th>
+					<th scope="col">Soyisim</th>
+					<th scope="col">email</th>
+					<th scope="col">Salary</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody id="employeeTableBody">
+				<tr th:each="e : ${employees}">
+					<td id="Id" th:text="${e.id}"></td>
+					<td id="firstName" th:text="${e.firstName}"></td>
+					<td id="lastNamel" th:text="${e.lastName}"></td>
+					<td id="email" th:text="${e.email}"></td>
+					<td id="salary" th:text="${#numbers.formatCurrency(e.salary)}"></td>					
+					<td>
+						<div class="btn-group" role="group">						  
+						  <a id="btnView" class="btn btn-primary btn-lg" th:href="@{ /get-employee/{id}(id=${e.id}) }" ><i class="bi bi-eye"></i></a>
+						  <a id="btnEdit" class="btn btn-success btn-lg" th:href="@{ /get-employee/{id}(id=${e.id}) }" ><i class="bi bi-pencil-square"></i></a>
+						  <a id="btnSil" class="btn btn-danger btn-lg" th:href="@{ /delete-employee/{id}(id=${e.id}) }" ><i class="bi bi-trash3"></i></a>
+						</div>					
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+	
+<!-- 	<!-- image view Modal start --> 
+<!-- 	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalResim"> -->
+<!-- 		<div class="modal-dialog"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h5 class="modal-title">Modal title</h5> -->
+<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+<!-- 						aria-label="Close"></button> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body"> -->
+<!-- 					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered">					 -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 					<button type="button" class="btn btn-secondary" -->
+<!-- 						data-bs-dismiss="modal">Close</button> -->
+<!-- <!-- 					<button type="button" class="btn btn-primary">Save changes</button> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<!-- image view Modal end -->	 
+<!-- 	<!-- view Modal start --> 
+<!-- 	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalView"> -->
+<!-- 		<div class="modal-dialog"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h5 class="modal-title">Modal title</h5> -->
+<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+<!-- 						aria-label="Close"></button> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body"> -->
+<!-- <!-- 					<p id="modalParagraf">Modal body text goes here.</p> -->
+<!-- 					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered"> -->
+					
+<!-- 					<div class="input-group input-group-sm mb-1 mt-3"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">Id : </span> -->
+<!-- 					  <input id="id" type="text" class="form-control" readonly> -->
+<!-- 					</div>					 -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">İsim : </span> -->
+<!-- 					  <input id="isim" type="text" class="form-control" readonly> -->
+<!-- 					</div> -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">E-mail : </span> -->
+<!-- 					  <input id="email" type="text" class="form-control" readonly> -->
+<!-- 					</div> -->
+					
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 					<button type="button" class="btn btn-secondary" -->
+<!-- 						data-bs-dismiss="modal">Close</button> -->
+<!-- <!-- 					<button type="button" class="btn btn-primary">Save changes</button> --> 
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<!-- view Modal end --> 
+<!-- 	<!-- view Modal start --> 
+<!-- 	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalEdit"> -->
+<!-- 		<div class="modal-dialog"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h5 class="modal-title">Modal title</h5> -->
+<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" -->
+<!-- 						aria-label="Close"></button> -->
+<!-- 				</div> -->
+<!-- 				<form id="editFormModal" action="" method="post" enctype="multipart/form-data"> -->
+<!-- 				<div class="modal-body"> -->
+<!-- <!-- 					<p id="modalParagraf">Modal body text goes here.</p> --> 
+				
+<!-- 					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered"> -->
+					
+<!-- 					<div class="input-group input-group-sm mb-1 mt-3"> -->
+<!-- 						<input type="file" id="resim" name="resim" class="form-control" accept="image/*"> -->
+<!-- 					</div>	 -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">Id : </span> -->
+<!-- 					  <input id="id" type="text" class="form-control" readonly> -->
+<!-- 					</div>					 -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">İsim : </span> -->
+<!-- 					  <input id="isim" name="name" type="text" class="form-control" > -->
+<!-- 					</div> -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">E-mail : </span> -->
+<!-- 					  <input id="email" name="email" type="text" class="form-control" > -->
+<!-- 					</div> -->
+					
+				
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button> -->
+<!-- 					<button type="submit" class="btn btn-primary">Güncelle</button> -->
+<!-- 				</div> -->
+<!-- 				</form>	 -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- 	<!-- view Modal end --> 
+<!-- 	<!-- delete Modal start --> 
+<!-- 	<div class="modal modal-fade" tabindex="-1" role="diaog" id="modalDelete"> -->
+<!-- 		<div class="modal-dialog"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h5 class="modal-title">Silmek istediğine emin misin ?</h5> -->
+<!-- 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body"> -->
+<!-- 					<p id="modalParagraf">Modal body text goes here.</p> -->
+<!-- 					<img id="userResim" src="" width="200" height="200" class="rounded mx-auto d-block bordered"> -->
+<!-- 					<p id="dnmparagraf"></p> -->
+<!-- 					<div class="input-group input-group-sm mb-1 mt-3"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">Id : </span> -->
+<!-- 					  <input id="id" type="text" class="form-control" readonly> -->
+<!-- 					</div>					 -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">İsim : </span> -->
+<!-- 					  <input id="isim" type="text" class="form-control" readonly> -->
+<!-- 					</div> -->
+<!-- 					<div class="input-group input-group-sm mb-1"> -->
+<!-- 					  <span class="input-group-text" id="basic-addon1">E-mail : </span> -->
+<!-- 					  <input id="email" type="text" class="form-control" readonly> -->
+<!-- 					</div> -->
+					
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+<!-- 					<a id="deleteConfirmBtn" href="" class="btn btn-danger" type="button">Evet Sil</a> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+	
+	
+	<!-- delete Modal end -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script th:src="@{../customjs/userpage.js}" type="text/javascript"></script>
+		
+</body>
+</html>
